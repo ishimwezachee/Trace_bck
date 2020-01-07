@@ -24,7 +24,7 @@ const eventSchema = new Schema({
     event_image:{
         type:Buffer,
         contentType:String
-    }
+    },
     organizer:{
         type:Schema.Types.ObjectId,
         ref : "User"
