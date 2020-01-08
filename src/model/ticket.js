@@ -21,10 +21,9 @@ const ticketSchema = new Schema({
         type:Number
     },
     payment_mode:{
-        type:[String]
+        type:String
     }
 });
 
 const Ticket = mongoose.model("Ticket",ticketSchema);
-
 module.exports = Ticket
