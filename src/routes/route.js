@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const UserController = require("../controllers/user")
 const EventController = require("../controllers/event");
 const TicketController = require("../controllers/ticket");
-
+//========================================================= account
+router.post('/signup',UserController.signUp);
+router.post('/login',UserController.login);
 //========================================================== event;
 router.post('/event',EventController.creat_event);
 router.get('/events',EventController.get_events);
