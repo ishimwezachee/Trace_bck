@@ -21,7 +21,7 @@ const eventSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:"Ticket"
     },
-    event_image:{
+    eventImage:{
         type:Buffer,
         contentType:String
     }

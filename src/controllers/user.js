@@ -1,39 +1,105 @@
+const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const User = require("../model/user");
-//========================================signup
-exports.signUp = (req,res,next) =>{
-bcrypt.hash(req.body.password,10).then(
-   async (hash) =>{
-        let user = new User({
-        first_name:req.body.first_name,
-        last_name:req.body.last_name,
-        email:req.body.email,
-        password:hash
+require('dotenv').config();
+exports.signUp = (req, res, next) => {
+User.find({ email: req.body.email })
+    .exec()
+    .then(user => {
+      if (user.length >= 1) {
+        return res.status(409).json({
+          message: "Mail exists, you have already an account in here"
         });
-   user = await user.save();
-   res.status(201).json({
-       message:"user created successfully",
-       data:user
-   })
-    }
-)
-}
-//============================================== login
-exports.login = async (req,res,next)=>{
-const user = await User.findOne({email:req.body.email});
-if(!user){
-    return res.status(401).json("user is not available")
-}
+      } else {
+        bcrypt.hash(req.body.password, 10, (err, hash) => {
+          if (err) {
+            return res.status(500).json({
+              error: err
+            });
+          } else {
+            const user = new User({
+              _id: new mongoose.Types.ObjectId(),
+              first_name:req.body.first_name,
+              last_name:req.body.last_name,
+              email: req.body.email,
+              password: hash
+            });
+            user.save().then(result => {
+                console.log(result);
+                res.status(201).json({
+                  message: "User created",
+                  data:result
+                });
+              })
+              .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                  error: err
+                });
+              });
+          }
+        });
+      }
+    });
+};
 
-bcrypt.compare(req.body.password, user.password).then(
-    async (valid)=>{
-        if(!valid){
-            return res.status(401).json("incorrect password")
+exports.login = (req, res, next) => {
+  User.find({ email: req.body.email })
+    .exec()
+    .then(user => {
+      if (user.length < 1) {
+        return res.status(401).json({
+          message: "Auth failed"
+        });
+      }
+      bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+        if (err) {
+          return res.status(401).json({
+            message: "Auth failed"
+          });
         }
-        res.status(200).json({
-        userId:user._id,
-        token:"token"
-        })
-    }
-)
-}
+        if (result) {
+          const token = jwt.sign(
+            {
+              email: user[0].email,
+              userId: user[0]._id
+            },
+            process.env.JWT_KEY,
+            {
+              expiresIn: "1h"
+            }
+          );
+          return res.status(200).json({
+            message: "Auth successful",
+            token: token
+          });
+        }
+        res.status(401).json({
+          message: "Auth failed"
+        });
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};
+
+// exports.user_delete = (req, res, next) => {
+//   User.remove({ _id: req.params.userId })
+//     .exec()
+//     .then(result => {
+//       res.status(200).json({
+//         message: "User deleted"
+//       });
+//     })
+//     .catch(err => {
+//       console.log(err);
+//       res.status(500).json({
+//         error: err
+//       });
+//     });
+// };
