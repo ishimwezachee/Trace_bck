@@ -9,6 +9,7 @@ let event = new Event({
     end_date:req.body.end_date,
     venue:req.body.venue,
     ticket:req.body.ticket,
+    eventImage:req.file.path
 });
   event = await event.save();
   res.status(201).json(event)

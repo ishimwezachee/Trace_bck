@@ -5,8 +5,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require('cors');
-const Routes = require("./src/routes/route")
-
+const Routes = require("./src/routes/route");
 
 //==================================================== middlewares
 app.use(morgan("dev"));
