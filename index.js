@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require('cors');
 const Routes = require("./src/routes/route");
+require("dotenv").config();
 
 //==================================================== middlewares
 app.use(morgan("dev"));
@@ -21,14 +22,26 @@ app.use("/welcome",(req,res)=>{
 app.use("/api",Routes)
 //=========================================================== connect mongdb;
 
-mongoose.connect('mongodb://localhost:27017/Trace',
+// mongoose.connect('mongodb://localhost:27017/Trace',
+//     {
+//         useCreateIndex: true,
+//         useNewUrlParser: true
+//     }
+//     , function () {
+//         console.log("database connected success")
+//     });
+
+//=========================================================== connect mongdb_ATLAS;
+
+mongoose.connect(process.env.MONGO_ATLAS_DB_URL,
     {
-        useCreateIndex: true,
-        useNewUrlParser: true
-    }
-    , function () {
-        console.log("database connected success")
-    });
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then( () => {
+    console.log('Connection to the Atlas Cluster is successful!')
+  })
+  .catch( (err) => console.error(err));
+
 
  //============================================================ port 
 const port = process.env.PORT || 4000;
