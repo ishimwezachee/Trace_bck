@@ -8,7 +8,6 @@ let event = new Event({
     start_date:req.body.start_date,
     end_date:req.body.end_date,
     venue:req.body.venue,
-    ticket:req.body.ticket,
     eventImage:req.file.path
 });
   event = await event.save();
@@ -42,6 +41,9 @@ exports.modify_event = async (req,res,next)=>{
   }
   if(req.body.venue){
     body.venue = req.body.venue
+  }
+  if(req.body.eventImage){
+    body.eventImage = req.body.eventImage
   }
  const _id = req.params.id;
  const event = await Event.findOneAndUpdate({ _id }, body);

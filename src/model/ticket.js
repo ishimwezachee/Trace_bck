@@ -19,10 +19,8 @@ const ticketSchema = new Schema({
     },
     amount:{
         type:Number
-    },
-    payment_mode:{
-        type:String
     }
+
 });
 
 const Ticket = mongoose.model("Ticket",ticketSchema);
