@@ -2,16 +2,26 @@ const Ticket = require("../model/ticket");
 
 //============================================ create 
 exports.create_ticket = async (req,res,next)=>{
+  const {
+    ticket_name,
+    description,
+    start_date,
+    end_date,
+    quantity,
+    amount
+  } = req.body
+
 let ticket = new Ticket({
-    ticket_name:req.body.ticket,
-    description:req.body.description,
-    start_date:req.body.start_date,
-    end_date:req.body.end_date,
-    number_of_ticket:req.body.number_of_ticket,
-    amount:req.body.amount,
-    // payment_mode:req.body.payment_mode
+    ticket_name,
+    description,
+    start_date,
+    end_date,
+    quantity,
+    amount
 });
+console.log(ticket);
   ticket = await ticket.save();
+  
   res.status(201).json(ticket);
 }
 //=========================================== get(all tickets);
