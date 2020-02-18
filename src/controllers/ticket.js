@@ -5,11 +5,11 @@ exports.create_ticket = async (req,res,next)=>{
 let ticket = new Ticket({
     ticket_name:req.body.ticket,
     description:req.body.description,
-    start_sale:req.body.start_sale,
-    end_sale:req.body.end_sale,
-    quantity:req.body.quantity,
+    start_date:req.body.start_date,
+    end_date:req.body.end_date,
+    number_of_ticket:req.body.number_of_ticket,
     amount:req.body.amount,
-    payment_mode:req.body.payment_mode
+    // payment_mode:req.body.payment_mode
 });
   ticket = await ticket.save();
   res.status(201).json(ticket);
@@ -34,14 +34,14 @@ exports.modify_ticket = async (req,res,next)=>{
   if(req.body.description){
     body.description = req.body.description
   }
-  if(req.body.end_sale){
-    body.end_sale = req.body.end_sale
+  if(req.body.end_date){
+    body.end_date = req.body.end_date
   }
-  if(req.body.start_sale){
-    body.start_sale = req.body.start_sale
+  if(req.body.start_date){
+    body.start_date = req.body.start_date
   }
-  if(req.body.quantity){
-    body.quantity = req.body.quantity
+  if(req.body.number_of_ticket){
+    body.number_of_ticket = req.body.number_of_ticket
   }
   if(req.body.amount){
     body.amount = req.body.amount

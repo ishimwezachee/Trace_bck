@@ -21,6 +21,4 @@ router.get('/tickets',TicketController.get_tickets);
 router.get("/ticket/:id",TicketController.get_ticket);
 router.patch("/ticket/:id",TicketController.modify_ticket);
 router.delete("/ticket/:id",TicketController.delete_ticket);
-//========================================================== payment;
-// router.post('/sale/purchase',PaymentController.create_payment)
 module.exports = router

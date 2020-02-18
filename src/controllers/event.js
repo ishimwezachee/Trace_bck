@@ -1,16 +1,28 @@
 const Event = require("../model/event");
-
+const fs = require('fs');
 //============================================ create 
 exports.creat_event = async (req,res,next)=>{
+  const {title,description,start_date,end_date,venue} = req.body;
+
 let event = new Event({
-    title:req.body.title,
-    description:req.body.description,
-    start_date:req.body.start_date,
-    end_date:req.body.end_date,
-    venue:req.body.venue,
-    eventImage:req.file.path
+    title,
+    description,
+    start_date,
+    end_date,
+    venue,
 });
-  event = await event.save();
+let images = [];
+       images.push({
+           data: fs.readFileSync(req.file.path),
+           contentType: 'image/jpeg'
+       });
+event.eventImage = images[0]
+event = await event.save()
+  //remove files in uploads folder
+  fs.unlink(req.file.path, (err) => {
+    if (err) return console.log(err);
+    console.log('file deleted successfully');
+    })
   res.status(201).json(event)
 }
 //=========================================== get(all events);
