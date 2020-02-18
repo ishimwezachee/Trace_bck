@@ -14,7 +14,7 @@ const ticketSchema = new Schema({
     end_date:{
         type:Date
     },
-    number_of_ticket:{
+    quantity:{
         type:Number
     },
     amount:{
