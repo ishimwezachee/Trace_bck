@@ -17,12 +17,8 @@ const eventSchema = new Schema({
     venue:{
         type:String
     },
-    // ticket:{
-    //     type:Schema.Types.ObjectId,
-    //     ref:"Ticket"
-    // },
     eventImage:{
-        type:Buffer,
+        data:Buffer,
         contentType:String
     }
 });
