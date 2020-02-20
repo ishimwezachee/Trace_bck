@@ -17,7 +17,9 @@ let images = [];
            contentType: 'image/jpeg'
        });
 event.eventImage = images[0]
+console.log(event)
 event = await event.save()
+console.log(event)
   //remove files in uploads folder
   fs.unlink(req.file.path, (err) => {
     if (err) return console.log(err);
