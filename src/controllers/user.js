@@ -29,7 +29,7 @@ exports.signUp = async (req,res,next)=>{
         },
         process.env.JWT_KEY,
         {
-          expiresIn: "1h"
+          expiresIn: "3h"
         }
       );
      res.status(201).json({
@@ -57,7 +57,7 @@ exports.login = async (req,res,next)=>{
         },
         process.env.JWT_KEY,
         {
-          expiresIn: "1h"
+          expiresIn: "3h"
         }
       );
      res.status(200).json({

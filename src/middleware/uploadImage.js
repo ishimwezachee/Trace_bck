@@ -10,7 +10,6 @@ exports.imageUpload = async (file) => {
     // console.log(file.eventImage)
 try {
     const is_image = await cloudinary.v2.uploader.upload(file.eventImage.tempFilePath);
-    console.log(is_image)
     if (!is_image) return false;
     return is_image.url
 } catch (error) {

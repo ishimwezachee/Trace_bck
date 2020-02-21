@@ -17,8 +17,23 @@ const ticketSchema = new Schema({
     quantity:{
         type:Number
     },
+    minimum:{
+        type:Number
+    },
+    maximum:{
+        type:Number
+    },
+    payment_option:{
+        type:[String]
+    },
+    sales_chanel:{
+        type:[String]
+    },
     amount:{
         type:Number
+    },
+    userId:{
+        type:String
     }
 
 });
