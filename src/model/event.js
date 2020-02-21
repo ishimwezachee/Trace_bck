@@ -17,6 +17,9 @@ const eventSchema = new Schema({
     venue:{
         type:String
     },
+    userId:{
+        type:String
+    },
     eventImage:{
      type:String
     }
