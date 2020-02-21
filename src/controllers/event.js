@@ -1,7 +1,9 @@
 const Event = require("../model/event");
+const upload = require("../middleware/uploadImage")
 const fs = require('fs');
 //============================================ create 
 exports.creat_event = async (req,res,next)=>{
+  let image_url = req.files !== null ? await upload.imageUpload(req.files) : "https://images.io/123";
   const {title,description,start_date,end_date,venue} = req.body;
 
 let event = new Event({
@@ -11,20 +13,8 @@ let event = new Event({
     end_date,
     venue,
 });
-let images = [];
-       images.push({
-           data: fs.readFileSync(req.file.path),
-           contentType: 'image/jpeg'
-       });
-event.eventImage = images[0]
-console.log(event)
+event.eventImage = image_url
 event = await event.save()
-console.log(event)
-  //remove files in uploads folder
-  fs.unlink(req.file.path, (err) => {
-    if (err) return console.log(err);
-    console.log('file deleted successfully');
-    })
   res.status(201).json(event)
 }
 //=========================================== get(all events);
