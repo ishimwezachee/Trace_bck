@@ -1,10 +1,20 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../model/user");
+const Validation = require("../validations/validation");
 require('dotenv').config();
 
 exports.signUp = async (req,res,next)=>{
     const {first_name,last_name,email,password}=req.body;
+    const validationObject = {
+        first_name,
+        last_name,
+        email,
+        password
+    };
+    // CHECK ERROR 
+    const { error } = Validation.onSignupValidation(validationObject);
+    if(error) return res.status(400).json({error:error.details[0].message})
  //CHECK IF USER EMAIL EXIST 
  const userEmail = await User.findOne({email});
  if(userEmail) return res.status(400).json({error:"email already exits"});
@@ -12,13 +22,9 @@ exports.signUp = async (req,res,next)=>{
  //HASH PASSWORD 
  const salt = await bcrypt.genSalt(10);
  const hashPassword = await bcrypt.hash(password,salt);
- //CREATE A NEW PASSWORD 
- const user = new User({
-     first_name,
-     last_name,
-     email,
-     password:hashPassword
- });
+ //CREATE A NEW USER 
+ const user = new User(validationObject);
+ user.password = hashPassword;
  try{
      const savedUser = await user.save();
 // CREATE WEB TOKEN 
