@@ -6,7 +6,6 @@ exports.creat_event = async (req,res,next)=>{
   let image_url = req.files !== null ? await upload.imageUpload(req.files) : "https://images.io/123";
   const {title,description,start_date,end_date,venue} = req.body;
   const { userId } = req.userData;
-  console.log(userId)
 let event = new Event({
     title,
     description,
@@ -15,8 +14,7 @@ let event = new Event({
     venue
 });
 event.eventImage = image_url;
-event.userId = userId
-console.log(event)
+event.userId = userId;
 event = await event.save()
   res.status(201).json(event)
 }
