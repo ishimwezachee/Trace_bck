@@ -15,9 +15,7 @@ exports.creat_event = async (req,res,next)=>{
     end_date,
     venue
   }
-  // VALIDATION 
-  const {error} = Validation.onEventValidation(validationObject);
-  if(error) return res.status(400).json({error:error.details[0].message})
+
 let event = new Event(validationObject);
 event.eventImage = image_url;
 event.userId = userId;
