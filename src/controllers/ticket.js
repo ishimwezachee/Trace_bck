@@ -1,4 +1,5 @@
 const Ticket = require("../model/ticket");
+const Validation = require("../validations/validation")
 //============================================ create 
 exports.create_ticket = async (req,res,next)=>{
   const {
@@ -13,19 +14,22 @@ exports.create_ticket = async (req,res,next)=>{
     sales_chanel,
     amount
   } = req.body
+  const validationObject ={
+    ticket_name,
+    description,
+    start_date,
+    end_date,
+    quantity,
+    minimum,
+    maximum,
+    payment_option,
+    sales_chanel,
+    amount
+  }
+const { error } = Validation.onTicketValidation(validationObject);
+if(error) return res.status(400).json({error:error.details[0].message})
 const {userId} = req.userData;
-let ticket = new Ticket({
-  ticket_name,
-  description,
-  start_date,
-  end_date,
-  quantity,
-  minimum,
-  maximum,
-  payment_option,
-  sales_chanel,
-  amount
-});
+let ticket = new Ticket(validationObject);
 ticket.userId = userId
   ticket = await ticket.save();
   res.status(201).json(ticket);
