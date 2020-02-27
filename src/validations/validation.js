@@ -24,8 +24,8 @@ exports.onEventValidation = data=>{
     const schema = Joi.object({
         title:Joi.string().min(3).max(15).required(),
         description:Joi.string().min(3).max(15).required(),
-        start_date: Joi.date().iso().required(),
-        end_date : Joi.date().iso().greater(Joi.ref('startTime')).required(),
+        start_date: Joi.date().required(),
+        end_date :Joi.date().required(),
         venue:Joi.string().min(3).max(15).required()
     });
     return schema.validate(data);
@@ -35,15 +35,15 @@ exports.onEventValidation = data=>{
 exports.onTicketValidation = data =>{
 const schema = Joi.object({
     ticket_name:Joi.string().min(3).max(15).required(),
-    description:Joi.string().min(3).max(15).required(),
-    start_date:Joi.date().iso().required(),
-    end_date: Joi.date().iso().greater(Joi.ref('startTime')).required(),
+    description:Joi.string().min(3).max(40).required(),
+    start_date:Joi.date().required(),
+    end_date: Joi.date().required(),
     quantity:Joi.number().required(),
     minimum:Joi.number().required(),
     maximum:Joi.number().required(),
     payment_option:Joi.string().min(3).max(15).required(),
     sales_chanel:Joi.string().min(3).max(15),
-    amount  :Joi.string().min(3).max(15).required(),
+    amount :Joi.number().required()
 })
 return schema.validate(data)
 }
